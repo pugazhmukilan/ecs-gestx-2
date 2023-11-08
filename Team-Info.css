@@ -1,0 +1,20 @@
+body{
+    background-color: black;
+}
+.member-details .first-two ,.mid-two ,.last-two{
+    color: white;
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    padding-top: 32px;
+    padding-bottom: 32px;
+}
+.member-details .Mithilesh ,.Srijith ,.Sabari{
+    padding-left: 150px;
+}
+.member-details .Pugazh, .Darshana{
+    padding-right: 150px;
+}
+.member-details .Bharani{
+    padding-right: 188px;
+}
