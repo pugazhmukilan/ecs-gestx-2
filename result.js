@@ -19,9 +19,8 @@ const firebaseApp = initializeApp(firebaseConfig);
 // Initialize Firestore
 const db = getFirestore(firebaseApp);
 
-const dataContainer = document.getElementById('output');
-const documentId = 'Completedetail';
-
+const table = document.getElementById('dataTable');
+const documentId = 'complete_emotion_percentage';
 (async () => {
     try {
         // Create a reference to the document
@@ -32,42 +31,21 @@ const documentId = 'Completedetail';
 
         if (docSnapshot.exists()) {
             // Document exists, extract data
-            const data = docSnapshot.data();
-            console.log(data);
+            const dataArray = docSnapshot.data().per;
 
-            // Analyze the data to find the most common field
-            const mostCommonField = findMostCommonField(data);
-            console.log(`Most common field: ${mostCommonField}`);
-
-            // Display the data and most common field in the output container
-            dataContainer.innerHTML = `<p>${data.per}</p>`;
-            dataContainer.innerHTML += `<p>Most common field: ${mostCommonField}</p>`;
+            dataArray.forEach((element) => {
+                var row = table.insertRow(-1);
+                var cell = row.insertCell(0);
+                cell.innerHTML = element;
+            });
         } else {
             // Document doesn't exist
             console.log('No such document!');
-            dataContainer.innerHTML = '<p>No data found</p>';
+            table.innerHTML = '<tr><td>No data found</td></tr>';
         }
     } catch (error) {
         // Handle errors
         console.error('Error getting document: ', error);
-        dataContainer.innerHTML = '<p>Error retrieving data</p>';
+        table.innerHTML = '<tr><td>Error retrieving data</td></tr>';
     }
 })();
-
-function findMostCommonField(data) {
-    // Assuming 'fields' is an array field in your document
-    const fields = data.per || [];
-
-    // Count occurrences of each field
-    const fieldCounts = fields.reduce((acc, field) => {
-        acc[field] = (acc[field] || 0) + 1;
-        return acc;
-    }, {});
-
-    // Find the most common field
-    const mostCommonField = Object.keys(fieldCounts).reduce((a, b) =>
-        fieldCounts[a] > fieldCounts[b] ? a : b
-    );
-
-    return mostCommonField;
-}
