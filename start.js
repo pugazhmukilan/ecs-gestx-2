@@ -21,8 +21,39 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.6.0/firebas
   let [seconds, minutes, hours] = [45, 0, 0];
   let timeref = document.querySelector(".timer-display");
   let maxEmotionDisplay = document.getElementById("max-emotion");
-  let int = null;
-
+// Update this function to handle different emotions and update every 5 seconds
+function updateMaxEmotionContent(maxEmotion) {
+    // Initial update
+    updateContent(maxEmotion);
+  
+    // Update content every 5 seconds
+    setInterval(() => {
+      updateContent(maxEmotion);
+    }, 5000);
+  }
+  
+  // New function to handle different emotions
+  function updateContent(maxEmotion) {
+    let content = "";
+  
+    // Switch statement to handle different emotions
+    switch (maxEmotion.key) {
+      case "Happy":
+        content = "You seem happy! Keep smiling!";
+        break;
+      case "Sad":
+        content = "Cheer up! Things will get better.";
+        break;
+      // Add more cases for other emotions as needed
+      default:
+        content = "you are doing good , keep going....";
+    }
+  
+    // Display the content on the website
+    document.getElementById("emotion-content").innerHTML = `<p>${content}</p>`;
+  }
+  
+  // Update this function to handle different emotions
   async function updateMaxEmotion() {
     try {
       // Fetch emotional data from Firestore
@@ -41,7 +72,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.6.0/firebas
       console.log("Emotion with Maximum Value:", maxEmotion);
   
       // Display the emotion with the maximum value on the website
-      maxEmotionDisplay.innerHTML = `<p>Emotion with Maximum Value: ${maxEmotion.key} (${maxEmotion.value})</p>`;
+      maxEmotionDisplay.innerHTML = `<p>Emotion with Maximum Value: ${maxEmotion.key} `;
+  
+      // Update content based on max emotion
+      updateMaxEmotionContent(maxEmotion);
     } catch (error) {
       console.error("Error fetching data from Firestore:", error);
     }
@@ -49,17 +83,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.6.0/firebas
   
   // Function to update max emotion every 5 seconds
   function updateMaxEmotionPeriodically() {
-    int = setInterval(() => {
+    setInterval(() => {
       updateMaxEmotion();
     }, 5000);
   }
   
   // Event listener for the "Start" button
   document.getElementById("start-button").addEventListener("click", () => {
-    if (int !== null) {
-      clearInterval(int);
-    }
-  
     // Initial update
     updateMaxEmotion();
   
@@ -67,14 +97,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.6.0/firebas
     updateMaxEmotionPeriodically();
   
     // Start the timer
-    int = setInterval(displayTimer, 1000);
+    setInterval(displayTimer, 1000);
   });
   
   // Function to display the timer
   function displayTimer() {
     seconds -= 1;
     if (seconds === 0) {
-      clearInterval(int);
       [seconds, minutes, hours] = [0, 0, 0];
       timeref.innerHTML = "00 : 00 : 00";
       redirect();
