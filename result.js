@@ -19,9 +19,12 @@ const firebaseApp = initializeApp(firebaseConfig);
 // Initialize Firestore
 const db = getFirestore(firebaseApp);
 
-const table = document.getElementById('dataTable');
-const documentId = 'complete_emotion_percentage';
-(async () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const table = document.getElementById('dataTable');
+    const maxEmotionContainer = document.getElementById('maxEmotionContainer');
+    const maxEmotionElement = document.getElementById('maxEmotion');
+    const documentId = 'complete_emotion_percentage';
+
     try {
         // Create a reference to the document
         const docRef = doc(db, 'emotion', documentId);
@@ -31,21 +34,37 @@ const documentId = 'complete_emotion_percentage';
 
         if (docSnapshot.exists()) {
             // Document exists, extract data
-            const dataArray = docSnapshot.data().per;
+            const dataMap = docSnapshot.data().per;
 
-            dataArray.forEach((element) => {
+            // Variables to track maximum emotion
+            let maxEmotion = '';
+            let maxValue = -Infinity;
+
+            Object.entries(dataMap).forEach(([emotion, value]) => {
                 var row = table.insertRow(-1);
-                var cell = row.insertCell(0);
-                cell.innerHTML = element;
+                var emotionCell = row.insertCell(0);
+                var valueCell = row.insertCell(1);
+
+                emotionCell.innerHTML = emotion;
+                valueCell.innerHTML = value;
+
+                // Update maxEmotion if current value is greater
+                if (value > maxValue) {
+                    maxValue = value;
+                    maxEmotion = emotion;
+                }
             });
+
+            // Display the emotion with the maximum value outside the table
+            maxEmotionElement.textContent = maxEmotion;
         } else {
             // Document doesn't exist
             console.log('No such document!');
-            table.innerHTML = '<tr><td>No data found</td></tr>';
+            table.innerHTML = '<tr><td colspan="2">No data found</td></tr>';
         }
     } catch (error) {
         // Handle errors
         console.error('Error getting document: ', error);
-        table.innerHTML = '<tr><td>Error retrieving data</td></tr>';
+        table.innerHTML = '<tr><td colspan="2">Error retrieving data</td></tr>';
     }
-})();
+});
