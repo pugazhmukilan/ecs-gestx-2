@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test Session</title>
     <link rel="stylesheet" href="start.css">
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Belanosima:wght@600;700&family=Fira+Sans:ital,wght@1,100&family=Inter:wght@600&family=Oswald&family=Poppins:ital,wght@0,200;1,100&family=Prompt:wght@600&family=REM:wght@100;300&family=Tilt+Warp&family=Ubuntu:wght@300&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Belanosima:wght@600;700&family=Fira+Sans:ital,wght@1,100&family=Inter:wght@600&family=Oswald&family=Poppins:ital,wght@0,200;1,100&family=Prompt:wght@600&family=REM:wght@100;300&family=Tilt+Warp&family=Ubuntu:wght@300&display=swap"
+        rel="stylesheet">
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js"></script>
 
 </head>
+
 <body>
+
+    <p id="max-emotion"></p>
+    <!-- Add this element to your HTML -->
+    <div id="emotion-content"></div>
+
+
     <div class="container">
         <div class="timer-display">
             00 : 00 : 45
         </div>
         <div class="buttons">
-           <button id="start-button" onclick="redirect()"><p id="btn-text">Start</p></button>
+            <button id="start-button" onclick="redirect()">
+                <p id="btn-text">Start</p>
+            </button>
         </div>
     </div>
-    <script src="start.js"></script>
+    <script type="module" src="start.js"></script>
 </body>
+
 </html>
